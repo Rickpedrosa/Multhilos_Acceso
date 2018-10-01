@@ -15,7 +15,7 @@ public class Ejercicio5 {
         Ejercicio5 ej = new Ejercicio5();
     }
 
-    public Ejercicio5() throws IOException {
+    private Ejercicio5() throws IOException {
         keyBoard = new Scanner(System.in);
         solicitarRutas();
         doWeirdStuff();
@@ -56,9 +56,7 @@ public class Ejercicio5 {
 
             if (destFile.isDirectory()) {
                 File newFile = new File(destFile.getAbsolutePath(), orgFile.getName());
-                if (newFile.createNewFile()) {
-                    System.out.println("Fichero creado...");
-                }
+                System.out.println("El fichero sin contenido " + (newFile.createNewFile() ? "ha sido copiado" : "no ha podido ser copiado"));
 
                 buffR = new BufferedReader(new FileReader(orgFile));
                 buffW = new BufferedWriter(new FileWriter(destFile.getAbsolutePath() + "\\" + orgFile.getName()));
@@ -69,6 +67,9 @@ public class Ejercicio5 {
                 }
                 buffR.close();
                 buffW.close();
+                System.out.printf("Volcado de texto desde [%s] a [%s] completado", orgFile.getPath(), destFile.getAbsolutePath() + "\\" + orgFile.getName());
+
+                //newFile.delete();
             } else {
                 //lo que sea con ficheros siempre que existan, pedir el boolean
                 System.out.println("Es un archivo existente");
@@ -76,11 +77,7 @@ public class Ejercicio5 {
                 newDestFile = new File(destFile.getAbsolutePath().replaceAll(destFile.getName(), orgFile.getName()));
                 int i;
                 if (trueOrFalse) {
-                    if (destFile.delete()) {
-                        System.out.println("Archivo borrado para su reemplazo");
-                    } else {
-                        System.out.println("SHCE_Podcast");
-                    }
+                    System.out.println("El archivo " + (destFile.delete() ? "ha podido ser borrado para su reemplazo" : "no ha podido ser boorado"));
 
                     fR = new FileReader(orgFile);
                     fW = new FileWriter(newDestFile);
@@ -93,11 +90,7 @@ public class Ejercicio5 {
                     System.out.println("Fin del reemplazo en true");
 
                 } else {
-                    if (destFile.delete()) {
-                        System.out.println("Archivo borrado para su reemplazo");
-                    } else {
-                        System.out.println("SHCE_Podcast");
-                    }
+                    System.out.println("El archivo " + (destFile.delete() ? "ha podido ser borrado para su reemplazo" : "no ha podido ser boorado"));
 
                     fR = new FileReader(orgFile);
                     fW = new FileWriter(newDestFile);

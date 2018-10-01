@@ -18,7 +18,6 @@ public class Ejercicio5 {
     private Ejercicio5() throws IOException {
         keyBoard = new Scanner(System.in);
         solicitarRutas();
-        doWeirdStuff();
     }
 
     private void solicitarRutas() {
@@ -32,7 +31,12 @@ public class Ejercicio5 {
         destFile = new File(destino);
         if (!orgFile.isFile() || !origen.endsWith(".txt")) {
             System.out.println("El origen no es un archivo de texto, idiota. ");
-            System.exit(0);
+        } else {
+            try {
+                doWeirdStuff();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 

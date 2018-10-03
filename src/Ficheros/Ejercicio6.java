@@ -5,6 +5,13 @@ import java.util.Scanner;
 
 public class Ejercicio6 {
     public static void main(String[] args) {
+        //deconstruirFile();
+        Ejercicio6 l = new Ejercicio6();
+        l.construirFile();
+
+    }
+
+    public void deconstruirFile() {
         File ficheroMain = new File("./NuevoDirectorio/ficheroMain.txt");
         int i;
         char[] buff = new char[15];
@@ -39,6 +46,48 @@ public class Ejercicio6 {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
     }
-}
+
+    public void construirFile() {
+        try {
+            File ficheroReconstruido = new File("./NuevoDirectorio/ficheroReconstruido.txt");
+            FileReader decF1 = new FileReader("./NuevoDirectorio/fichero1.txt");
+            FileReader decF2 = new FileReader("./NuevoDirectorio/fichero2.txt");
+            FileReader decF3 = new FileReader("./NuevoDirectorio/fichero3.txt");
+            FileWriter decFW = new FileWriter(ficheroReconstruido);
+            boolean flag = true;
+            int contador = 1;
+            int j = 0;
+            int i = 0;
+            char[] buff = new char[15];
+
+//            j = i;    dentro del while
+//            decFW.write(buff, i - j, j);
+
+
+
+
+
+
+//            for (i = 0; i < 1; i++) {
+//                System.out.println(i = decF1.read(buff, 5, 5));
+//                System.out.println(buff);
+//            }
+
+                    System.out.println("ok ya");
+                    decF1.close();
+                    decF2.close();
+                    decF3.close();
+                    decFW.close();
+
+                } catch(FileNotFoundException e){
+                    e.printStackTrace();
+                } catch(IOException e){
+                    e.printStackTrace();
+                }
+            }
+
+            public void xd () {
+
+            }
+        }

@@ -99,23 +99,14 @@ public class Ejercicio5 {
                     fR = new FileReader(orgFile);
                     fW = new FileWriter(newDestFile);
 
-                    ArrayList<Character> omegaLUL = new ArrayList<>();
-                    while ((i = fR.read()) != -1) {
-                        omegaLUL.add((char) i);
+                    char[] mepegountiro = new char[20];
+                    while ((i = fR.read(mepegountiro)) != -1) {
+                        fW.write(mepegountiro);
+                        if (i < mepegountiro.length) {
+                            fW.write(mepegountiro, mepegountiro.length - i, i);
+                        }
                     }
                     fR.close();
-                    System.out.println("ArrayList cargado");
-
-                    char[] mepegountiro = new char[omegaLUL.size()];
-                    for (i = 0; i < mepegountiro.length; i++) {
-                        mepegountiro[i] = omegaLUL.get(i);
-                    }
-                    System.out.println("Búfer cargado con éxito");
-
-
-                    for (i = 0; i < mepegountiro.length; i++) {
-                        fW.write(mepegountiro[i]);
-                    }
                     fW.close();
                     System.out.println("Fin del reemplazo en false");
                 }

@@ -8,9 +8,9 @@ public class Main_return {
         Hilo_return ret1 = new Hilo_return(n1);
         Hilo_return ret2 = new Hilo_return(n2);
         Hilo_return ret3 = new Hilo_return(n3);
-        double val = 0;
-        double va2 = 0;
-        double va3 = 0;
+        double val;
+        double va2;
+        double va3;
 
         Thread h1 = new Thread(ret1);
         Thread h2 = new Thread(ret2);
@@ -33,9 +33,17 @@ public class Main_return {
         va2 = ret2.getValue();
         va3 = ret3.getValue();
 
-        System.out.printf("El factorial de %d es: %f\n", n1, val);
-        System.out.printf("El factorial de %d es: %f\n", n2, va2);
-        System.out.printf("El factorial de %d es: %f\n", n3, va3);
+        try {
+            System.out.printf("El factorial de %d es: %.3f\n", n1, val);
+            Thread.sleep(2000);
+            System.out.printf("El factorial de %d es: %.3f\n", n2, va2);
+            Thread.sleep(2000);
+            System.out.printf("El factorial de %d es: %.3f\n", n3, va3);
+            Thread.sleep(2000);
+
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         System.out.println("La suma de todos los factoriales es igual a: " + (val + va2 + va3));
     }
 }

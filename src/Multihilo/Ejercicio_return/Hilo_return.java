@@ -3,10 +3,10 @@ package Multihilo.Ejercicio_return;
 public class Hilo_return implements Runnable {
 
     private int value;
-    private  double fact;
+    private double fact;
 
-    public Hilo_return(int i) {
-        this.value = i;
+    public Hilo_return(int value) {
+        this.value = value;
     }
 
     @Override
@@ -15,6 +15,7 @@ public class Hilo_return implements Runnable {
         for (int i = value; i > 0; i--) {
             fact = fact * i;
         }
+
     }
 
     public double getValue() {

@@ -23,8 +23,6 @@ public class Main_return {
             h1.join();
             h2.join();
             h3.join();
-            //Si no ponemos el join a los hilos, habrá veces que se ejecuten bien los 3, y habrá veces que no
-            //Haciendo esto nos aseguramos que salgan bien los 3
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

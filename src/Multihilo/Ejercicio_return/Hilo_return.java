@@ -15,7 +15,6 @@ public class Hilo_return implements Runnable {
         for (int i = value; i > 0; i--) {
             fact = fact * i;
         }
-
     }
 
     public double getValue() {

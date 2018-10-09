@@ -1,4 +1,4 @@
-package Multihilo.Ejercicio_return;
+package src.Multihilo.Ejercicio_return;
 
 public class Main_return {
     public static void main(String[] args) {

@@ -14,11 +14,6 @@ public class Ej8_noSerial {
     private boolean money;
     private float cantidad;
 
-    public static void main(String[] args) {
-        Ej8_noSerial l = new Ej8_noSerial();
-        l.menu();
-    }
-
     private void escribirBinario() {
         solicitarContacto();
         try {
@@ -39,8 +34,9 @@ public class Ej8_noSerial {
         }
     }
 
-    private Ej8_noSerial() {
+    public Ej8_noSerial() {
         teclado = new Scanner(System.in);
+        menu();
     }
 
     private void solicitarContacto() {
@@ -97,6 +93,7 @@ public class Ej8_noSerial {
             }
             System.out.println("*********************************");
             datIn.close();
+            System.out.println("*********************************");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -111,8 +108,6 @@ public class Ej8_noSerial {
 
         System.out.print("¿Qué quieres hacer? > ");
         op = teclado.nextInt();
-//        teclado.close();
-
         switch (op) {
             case 1:
                 escribirBinario();

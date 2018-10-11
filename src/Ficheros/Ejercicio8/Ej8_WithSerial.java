@@ -19,11 +19,7 @@ public class Ej8_WithSerial {
     public Ej8_WithSerial() {
         teclado = new Scanner(System.in);
         fichero = new File("./NuevoDirectorio/binaryObject0.dat");
-    }
-
-    public static void main(String[] args) {
-        Ej8_WithSerial l = new Ej8_WithSerial();
-        l.menu();
+        menu();
     }
 
     private void solicitarContacto() {

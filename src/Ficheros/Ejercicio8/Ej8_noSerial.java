@@ -14,11 +14,18 @@ public class Ej8_noSerial {
     private boolean money;
     private float cantidad;
 
+    public Ej8_noSerial() {
+        teclado = new Scanner(System.in);
+        menu();
+    }
+
     private void escribirBinario() {
+        FileOutputStream writeBin;
+        DataOutputStream datOut;
         solicitarContacto();
         try {
-            FileOutputStream writeBin = new FileOutputStream("./NuevoDirectorio/binary.dat", true);
-            DataOutputStream datOut = new DataOutputStream(writeBin);
+            writeBin = new FileOutputStream("./NuevoDirectorio/binary.dat", true);
+            datOut = new DataOutputStream(writeBin);
 
             datOut.writeUTF(nombre);
             datOut.writeInt(tlf);
@@ -32,11 +39,6 @@ public class Ej8_noSerial {
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-    public Ej8_noSerial() {
-        teclado = new Scanner(System.in);
-        menu();
     }
 
     private void solicitarContacto() {

@@ -18,7 +18,7 @@ public class Ej8_WithSerial {
 
     public Ej8_WithSerial() {
         teclado = new Scanner(System.in);
-        fichero = new File("./NuevoDirectorio/binaryObject0.dat");
+        fichero = new File("./NuevoDirectorio/binaryObjectxd.dat");
         menu();
     }
 

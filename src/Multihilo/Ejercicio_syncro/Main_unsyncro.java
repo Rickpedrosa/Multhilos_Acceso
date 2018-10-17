@@ -2,9 +2,10 @@ package src.Multihilo.Ejercicio_syncro;
 
 public class Main_unsyncro {
     public static void main(String[] args) {
+        boolean bol = false;
         double resultado;
         Tropas trp = new Tropas(0);
-        HiloCurrante work = new HiloCurrante(trp);
+        HiloCurrante work = new HiloCurrante(trp, bol);
         Thread h1 = new Thread(work);
         Thread h2 = new Thread(work);
         Thread h3 = new Thread(work);

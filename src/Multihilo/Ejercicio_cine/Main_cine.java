@@ -4,8 +4,8 @@ public class Main_cine {
     public static void main(String[] args) {
         Cine cinema = new Cine();
         Thread h1 = new Thread(new Taquilla_currante1(cinema));
-        Thread h2 = new Thread(new Taquilla_currante2(cinema));
-        Thread h3 = new Thread(new Taquilla_currante3(cinema));
+        Thread h2 = new Thread(new Taquilla_currante1(cinema));
+        Thread h3 = new Thread(new Taquilla_currante1(cinema));
 
         h1.start();
         h2.start();

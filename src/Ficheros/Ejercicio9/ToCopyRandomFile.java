@@ -1,8 +1,10 @@
 package src.Ficheros.Ejercicio9;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
+import java.util.Random;
+
 import src.Ficheros.Ejercicio8.Agenda;
+import src.Ficheros.Ejercicio8.MiObjectOutputStream;
 /* private String nombre;
     private int tlf 4bytes;
     private String dir;
@@ -13,12 +15,23 @@ import src.Ficheros.Ejercicio8.Agenda;
 
 public class ToCopyRandomFile {
 
-    public ToCopyRandomFile() {
+    private Agenda contacto;
+
+    public static void main(String[] args) {
+        ToCopyRandomFile l = new ToCopyRandomFile();
     }
 
-    public void copyFile(File ficheroACopiar) throws IOException {
-        File newRandFile = new File(ficheroACopiar, "randFile.dat");
-        System.out.printf("El fichero " + (newRandFile.createNewFile() ? "ha sido copiado" : "no ha podido ser copiado"));
+    public ToCopyRandomFile() {
+        copyFile();
+    }
 
+    public void copyFile() {
+        /*Poner StringBuffer.setLength(15) por si las moscas*/
+        File archivoOrigen = new File("./NuevoDirectorio/binary.dat");
+        try {
+            RandomAccessFile randomFile = new RandomAccessFile(archivoOrigen, "rw");
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 }

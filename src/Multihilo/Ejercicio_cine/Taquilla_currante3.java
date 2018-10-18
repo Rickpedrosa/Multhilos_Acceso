@@ -11,8 +11,10 @@ public class Taquilla_currante3 implements Runnable {
     @Override
     public void run() {
         for (int i = 0; i < 6; i++) {
-            cine.comprarButaca(10, i);
-            cine.dejarButaca(30, i);
+            int random1 = (int) ((Math.random() * 50) + 1);
+            int random2 = (int) ((Math.random() * 30) + 1);
+            cine.comprarButaca(random1, i);
+            cine.dejarButaca(random2, i);
         }
     }
 }

@@ -23,8 +23,14 @@ public class Ej8_noSerial {
         FileOutputStream writeBin;
         DataOutputStream datOut;
         solicitarContacto();
+        File filesilla = new File("./NuevoDirectorio/binaryGOD.dat");
         try {
-            writeBin = new FileOutputStream("./NuevoDirectorio/binary.dat", true);
+            if (!filesilla.exists()) {
+                filesilla.createNewFile();
+                writeBin = new FileOutputStream(filesilla);
+            } else {
+                writeBin = new FileOutputStream(filesilla, true);
+            }
             datOut = new DataOutputStream(writeBin);
 
             datOut.writeUTF(nombre);
@@ -66,7 +72,7 @@ public class Ej8_noSerial {
 
     private void leerBinario() {
         try {
-            FileInputStream readBin = new FileInputStream("./NuevoDirectorio/binary.dat");
+            FileInputStream readBin = new FileInputStream("./NuevoDirectorio/binaryGOD.dat");
             DataInputStream datIn = new DataInputStream(readBin);
 
             try {

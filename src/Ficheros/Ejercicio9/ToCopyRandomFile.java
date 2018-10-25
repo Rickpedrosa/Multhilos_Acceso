@@ -1,10 +1,7 @@
 package src.Ficheros.Ejercicio9;
 
 import java.io.*;
-import java.util.Random;
 
-import src.Ficheros.Ejercicio8.Agenda;
-import src.Ficheros.Ejercicio8.MiObjectOutputStream;
 /* private String nombre;
     private int tlf 4bytes;
     private String dir;
@@ -15,22 +12,53 @@ import src.Ficheros.Ejercicio8.MiObjectOutputStream;
 
 public class ToCopyRandomFile {
 
-    private Agenda contacto;
-
-    public static void main(String[] args) {
-        ToCopyRandomFile l = new ToCopyRandomFile();
+    private ToCopyRandomFile() {
     }
 
-    public ToCopyRandomFile() {
-        copyFile();
-    }
-
-    public void copyFile() {
+    public static void copyFiletoRandomFile() {
         /*Poner StringBuffer.setLength(15) por si las moscas*/
-        File archivoOrigen = new File("./NuevoDirectorio/binary.dat");
+        File archivoOrigen = new File("./NuevoDirectorio/binaryGOD.dat");
+
         try {
-            RandomAccessFile randomFile = new RandomAccessFile(archivoOrigen, "rw");
-        } catch (FileNotFoundException e) {
+            FileInputStream readBin = new FileInputStream(archivoOrigen);
+            DataInputStream datIn = new DataInputStream(readBin);
+            RandomAccessFile randomFile = new RandomAccessFile("./NuevoDirectorio/binaryRandom.dat", "rw");
+            int id = 1;
+            StringBuffer buffNombre;
+            StringBuffer buffDir;
+            StringBuffer buffFecha_nac;
+
+            try {
+                while (true) {
+                    randomFile.writeInt(id);
+                    randomFile.writeBoolean(true);
+
+                    buffNombre = new StringBuffer(datIn.readUTF());
+                    buffNombre.setLength(14);
+                    randomFile.writeChars(buffNombre.toString()); //nombre
+
+                    randomFile.writeInt(datIn.readInt()); //tlf
+
+                    buffDir = new StringBuffer(datIn.readUTF());
+                    buffDir.setLength(20);
+                    randomFile.writeChars(buffDir.toString()); //dir
+
+                    randomFile.writeInt(datIn.readInt()); //cp
+
+                    buffFecha_nac = new StringBuffer(datIn.readUTF());
+                    buffFecha_nac.setLength(10);
+                    randomFile.writeChars(buffFecha_nac.toString()); //fecha_nacimiento
+
+                    randomFile.writeBoolean(datIn.readBoolean()); //money (debe dinero?)
+                    randomFile.writeFloat(datIn.readFloat()); //cantidad
+                    id++;
+                    System.out.println("Contacto copiado");
+                }
+            } catch (EOFException ex) {
+                System.out.println("Fin de copiado");
+            }
+            datIn.close(); //fin de lectura
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }

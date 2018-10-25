@@ -1,4 +1,6 @@
-package src.Ficheros.Ejercicio9;
+package Ficheros.Ejercicio9;
+
+import Ficheros.Ejercicio9.ToCopyRandomFile;
 
 import java.io.*;
 import java.util.Scanner;
@@ -15,10 +17,7 @@ public class RandomMenu {
 
     public static void main(String[] args) {
         RandomMenu r = new RandomMenu();
-        ToCopyRandomFile.copyFiletoRandomFile();
-        r.consultarContactosPorID();
-        r.modificarDeudasPorID();
-        //new File("./NuevoDirectorio/binaryRandom.dat").delete();
+        System.out.println(r.getLastIndex());
     }
 
     public RandomMenu() {
@@ -28,11 +27,11 @@ public class RandomMenu {
         teclado = new Scanner(System.in);
         formato = "Contacto %d; Nombre: %s; Teléfono: %d; " +
                 "Dirección: %s; Código Postal: %d; Fecha de nacimiento: %s; ¿Debe dinero? %b; Cantidad: %.2f€;\n";
-        //initApp();
+//        initApp();
     }
 
     private void initApp() {
-        if (new File("./NuevoDirectorio/binaryRandom.dat").exists()) {
+        if (new File("E:\\2dam\\prog_movil\\IdeaProjects\\MA\\NuevoDirectorio\\binaryRandom.dat").exists()) {
             menu();
         } else {
             ToCopyRandomFile.copyFiletoRandomFile();
@@ -54,7 +53,6 @@ public class RandomMenu {
 
         System.out.print("Escribe el número del menú: ");
         int op = teclado.nextInt();
-        teclado.nextLine();
         switch (op) {
             //Hacer dos versiones: con writeChars y writeUTF
             case 0:
@@ -87,6 +85,7 @@ public class RandomMenu {
                 menu();
                 break;
             case 7:
+                //noinspection ResultOfMethodCallIgnored
                 new File("./NuevoDirectorio/binaryRandom.dat").delete();
                 System.out.println("Fichero borrado");
                 System.exit(0);
@@ -199,7 +198,7 @@ public class RandomMenu {
         boolean esDeudor;
         float deuda;
 
-        long posicion = ((op - 1) * LONGITUD_CONTACTO) + 100;
+        long posicion = ((op - 1) * LONGITUD_CONTACTO) + 101;
         RandomAccessFile randomFileLecEscr = getRandomAccess("rw");
         try {
             if (posicion >= randomFileLecEscr.length()) {
@@ -213,7 +212,7 @@ public class RandomMenu {
                     if (esDeudor) {
                         System.out.printf("El contacto %d tiene una deuda de %.2f€\n", op, deuda);
                         System.out.print("Cantidad que debe actualmente: ");
-                        //teclado.nextLine();
+
                         float cantidad = teclado.nextFloat();
                         System.out.println();
 
@@ -228,13 +227,12 @@ public class RandomMenu {
                     } else {
                         System.out.printf("El Contacto %d no era un moroso hasta ahora.\n", op);
                         System.out.printf("Cantidad que debe el contacto %d: ", op);
-                        //teclado.nextLine();
+
                         float cantidad = teclado.nextFloat();
-                        //System.out.println();
+                        System.out.println();
 
                         randomFileLecEscr.seek(posicion);
                         randomFileLecEscr.writeBoolean(true);
-                        randomFileLecEscr.seek(randomFileLecEscr.getFilePointer() + 1);
                         randomFileLecEscr.writeFloat(cantidad);
                         System.out.printf("El contacto %d es ahora un moroso que debe %.2f€\n", op, cantidad);
                     }
@@ -252,7 +250,7 @@ public class RandomMenu {
     private RandomAccessFile getRandomAccess(String accessMode) {
         RandomAccessFile file = null;
         try {
-            file = new RandomAccessFile(new File("./NuevoDirectorio/binaryRandom.dat"), accessMode);
+            file = new RandomAccessFile(new File("E:\\2dam\\prog_movil\\IdeaProjects\\MA\\NuevoDirectorio\\binaryRandom.dat"), accessMode);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
@@ -260,7 +258,7 @@ public class RandomMenu {
     }
 
     private boolean isContactoTrueLogic(RandomAccessFile f, int id) {
-        /*No hago el close aquí porque se hace en el método donde se le llama*/
+        /*No hago el file.close() aquí porque se hace en el método donde se le llama*/
         boolean borrado = false;
 
         long posicion = ((id - 1) * LONGITUD_CONTACTO) + 4;
@@ -277,4 +275,55 @@ public class RandomMenu {
         return borrado;
     }
 
+    private void addContatoPorCharsUltPos() {
+        RandomAccessFile file = getRandomAccess("rw");
+        // solicitarContacto();
+        StringBuffer buffNombre;
+        StringBuffer buffDir;
+        StringBuffer buffFecha_nac;
+        long lastID = getLastIndex();
+    }
+
+    private long getLastIndex() {
+        long pos = 0;
+        long lastID = 0;
+        try {
+            RandomAccessFile randomFileLectura = getRandomAccess("r");
+            try {
+                do {
+                    randomFileLectura.seek(pos);
+                    lastID = randomFileLectura.readInt();
+                    pos += LONGITUD_CONTACTO;
+                } while (randomFileLectura.getFilePointer() != randomFileLectura.length());
+            } catch (EOFException ignored) {
+            }
+            randomFileLectura.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return lastID;
+    }
+
+    private void solicitarContacto() {
+        System.out.print("Nombre: ");
+        strNombre = teclado.next();
+        System.out.print("Teléfono: ");
+        tlf = teclado.nextInt();
+        teclado.nextLine();
+        System.out.print("Dirección: ");
+        strDir = teclado.nextLine();
+        System.out.print("C.Postal: ");
+        cp = teclado.nextInt();
+        teclado.nextLine();
+        System.out.print("Fecha nacimiento: ");
+        strFechanac = teclado.nextLine();
+        System.out.print("¿Debo dinero?: ");
+        debeDinero = teclado.nextBoolean();
+        if (debeDinero) {
+            System.out.print("Cantidad: ");
+            cantidad = teclado.nextFloat();
+        } else {
+            cantidad = 0;
+        }
+    }
 }

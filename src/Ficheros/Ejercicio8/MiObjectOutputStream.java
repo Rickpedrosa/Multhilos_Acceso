@@ -1,4 +1,4 @@
-package src.Ficheros.Ejercicio8;
+package Ficheros.Ejercicio8;
 
 import java.io.IOException;
 import java.io.ObjectOutputStream;

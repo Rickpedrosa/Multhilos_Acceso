@@ -1,4 +1,6 @@
-package src.Ficheros.Ejercicio8;
+package Ficheros.Ejercicio8;
+
+import Ficheros.Ejercicio8.Agenda;
 
 import java.io.*;
 import java.util.Scanner;

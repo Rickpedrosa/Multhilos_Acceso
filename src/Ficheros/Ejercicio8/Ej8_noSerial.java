@@ -1,4 +1,4 @@
-package src.Ficheros.Ejercicio8;
+package Ficheros.Ejercicio8;
 
 import java.io.*;
 import java.util.Scanner;
@@ -23,7 +23,7 @@ public class Ej8_noSerial {
         FileOutputStream writeBin;
         DataOutputStream datOut;
         solicitarContacto();
-        File filesilla = new File("./NuevoDirectorio/binaryGOD.dat");
+        File filesilla = new File("E:\\2dam\\prog_movil\\IdeaProjects\\MA\\NuevoDirectorio\\binaryGOD.dat");
         try {
             if (!filesilla.exists()) {
                 filesilla.createNewFile();

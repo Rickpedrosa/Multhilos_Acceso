@@ -1,4 +1,4 @@
-package src.Ficheros.Ejercicio9;
+package Ficheros.Ejercicio9;
 
 import java.io.*;
 
@@ -17,12 +17,12 @@ public class ToCopyRandomFile {
 
     public static void copyFiletoRandomFile() {
         /*Poner StringBuffer.setLength(15) por si las moscas*/
-        File archivoOrigen = new File("./NuevoDirectorio/binaryGOD.dat");
+        File archivoOrigen = new File("E:\\2dam\\prog_movil\\IdeaProjects\\MA\\NuevoDirectorio\\binaryGOD.dat");
 
         try {
             FileInputStream readBin = new FileInputStream(archivoOrigen);
             DataInputStream datIn = new DataInputStream(readBin);
-            RandomAccessFile randomFile = new RandomAccessFile("./NuevoDirectorio/binaryRandom.dat", "rw");
+            RandomAccessFile randomFile = new RandomAccessFile("E:\\2dam\\prog_movil\\IdeaProjects\\MA\\NuevoDirectorio\\binaryRandom.dat", "rw");
             int id = 1;
             StringBuffer buffNombre;
             StringBuffer buffDir;

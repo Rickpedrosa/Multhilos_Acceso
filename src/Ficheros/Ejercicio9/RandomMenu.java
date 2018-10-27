@@ -1,6 +1,6 @@
 package Ficheros.Ejercicio9;
 
-import Ficheros.Ejercicio9.ToCopyRandomFile;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.*;
 import java.util.Scanner;
@@ -14,24 +14,27 @@ public class RandomMenu {
     private float cantidad;
     private boolean debeDinero, noTaBorrao;
     private char dir[], fechanac[], nombre[];
+    private int lastID;
+    private long lastPos;
+    private File ficherOrigen;
 
     public static void main(String[] args) {
         RandomMenu r = new RandomMenu();
-        System.out.println(r.getLastIndex());
     }
 
-    public RandomMenu() {
+    private RandomMenu() {
+        ficherOrigen = new File("E:\\2dam\\prog_movil\\IdeaProjects\\MA\\NuevoDirectorio\\binaryRandom.dat");
         nombre = new char[14];
         fechanac = new char[10];
         dir = new char[20];
         teclado = new Scanner(System.in);
         formato = "Contacto %d; Nombre: %s; Teléfono: %d; " +
                 "Dirección: %s; Código Postal: %d; Fecha de nacimiento: %s; ¿Debe dinero? %b; Cantidad: %.2f€;\n";
-//        initApp();
+        initApp();
     }
 
     private void initApp() {
-        if (new File("E:\\2dam\\prog_movil\\IdeaProjects\\MA\\NuevoDirectorio\\binaryRandom.dat").exists()) {
+        if (ficherOrigen.exists()) {
             menu();
         } else {
             ToCopyRandomFile.copyFiletoRandomFile();
@@ -59,7 +62,7 @@ public class RandomMenu {
                 System.exit(0);
                 break;
             case 1:
-                consultarContactos();
+                consultarContactos(true);
                 menu();
                 break;
             case 2:
@@ -69,6 +72,7 @@ public class RandomMenu {
             case 3:
                 //Añadir contacto 1)Por el final 2)Primera pos libre
                 System.out.println("En construcción");
+                charsOrUTFUltPos();
                 menu();
                 break;
             case 4:
@@ -82,11 +86,12 @@ public class RandomMenu {
             case 6:
                 //Compactación del fichero
                 System.out.println("En construcción");
+                System.out.println(posOnLogicFalse());
                 menu();
                 break;
             case 7:
                 //noinspection ResultOfMethodCallIgnored
-                new File("./NuevoDirectorio/binaryRandom.dat").delete();
+                ficherOrigen.delete();
                 System.out.println("Fichero borrado");
                 System.exit(0);
                 break;
@@ -108,11 +113,11 @@ public class RandomMenu {
                 id = randomFileLectura.readInt();
                 noTaBorrao = randomFileLectura.readBoolean();
 
-                strNombre = readValuetoString(randomFileLectura, nombre);
+                strNombre = readValueToString(randomFileLectura, nombre);
                 tlf = randomFileLectura.readInt();
-                strDir = readValuetoString(randomFileLectura, dir);
+                strDir = readValueToString(randomFileLectura, dir);
                 cp = randomFileLectura.readInt();
-                strFechanac = readValuetoString(randomFileLectura, fechanac);
+                strFechanac = readValueToString(randomFileLectura, fechanac);
                 debeDinero = randomFileLectura.readBoolean();
                 cantidad = randomFileLectura.readFloat();
 
@@ -129,7 +134,7 @@ public class RandomMenu {
         }
     }
 
-    private void consultarContactos() {
+    private void consultarContactos(boolean mostrar) {
         long pos = 0;
         try {
             RandomAccessFile randomFileLectura = getRandomAccess("r");
@@ -139,18 +144,22 @@ public class RandomMenu {
 
                     id = randomFileLectura.readInt();
                     noTaBorrao = randomFileLectura.readBoolean();
-                    strNombre = readValuetoString(randomFileLectura, nombre);
+                    strNombre = readValueToString(randomFileLectura, nombre);
                     tlf = randomFileLectura.readInt();
-                    strDir = readValuetoString(randomFileLectura, dir);
+                    strDir = readValueToString(randomFileLectura, dir);
                     cp = randomFileLectura.readInt();
-                    strFechanac = readValuetoString(randomFileLectura, fechanac);
+                    strFechanac = readValueToString(randomFileLectura, fechanac);
                     debeDinero = randomFileLectura.readBoolean();
                     cantidad = randomFileLectura.readFloat();
 
-                    if (id > 0 && noTaBorrao) {
-                        System.out.printf(formato, id, strNombre, tlf, strDir, cp, strFechanac, debeDinero, cantidad);
+                    getLastIndex(id);
+                    if (mostrar) {
+                        if (id > 0 && noTaBorrao) {
+                            System.out.printf(formato, id, strNombre, tlf, strDir, cp, strFechanac, debeDinero, cantidad);
+                        }
                     }
                     pos += LONGITUD_CONTACTO;
+                    getLastPos(pos);
 
                 } while (randomFileLectura.getFilePointer() != randomFileLectura.length());
             } catch (EOFException ex) {
@@ -162,7 +171,8 @@ public class RandomMenu {
         }
     }
 
-    private String readValuetoString(RandomAccessFile f, char[] arrayChar) throws IOException {
+    @NotNull
+    private String readValueToString(RandomAccessFile f, @NotNull char[] arrayChar) throws IOException {
         char aux;
         for (int i = 0; i < arrayChar.length; i++) {
             aux = f.readChar();
@@ -218,7 +228,7 @@ public class RandomMenu {
 
                         randomFileLecEscr.seek(posicion + 1);
                         randomFileLecEscr.writeFloat(cantidad);
-                        System.out.println("Deuda modificada\n");
+                        System.out.printf("Deuda modificada de %.2f€ a %.2f€\n", deuda, cantidad);
                         if (cantidad == 0) {
                             randomFileLecEscr.seek(posicion);
                             randomFileLecEscr.writeBoolean(false);
@@ -240,7 +250,6 @@ public class RandomMenu {
                     System.out.println("El contacto no existe o fue borrado\n");
                 }
                 randomFileLecEscr.close();
-                consultarContactos();
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -250,14 +259,14 @@ public class RandomMenu {
     private RandomAccessFile getRandomAccess(String accessMode) {
         RandomAccessFile file = null;
         try {
-            file = new RandomAccessFile(new File("E:\\2dam\\prog_movil\\IdeaProjects\\MA\\NuevoDirectorio\\binaryRandom.dat"), accessMode);
+            file = new RandomAccessFile(ficherOrigen, accessMode);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
         return file;
     }
 
-    private boolean isContactoTrueLogic(RandomAccessFile f, int id) {
+    private boolean isContactoTrueLogic(@NotNull RandomAccessFile f, int id) {
         /*No hago el file.close() aquí porque se hace en el método donde se le llama*/
         boolean borrado = false;
 
@@ -277,31 +286,82 @@ public class RandomMenu {
 
     private void addContatoPorCharsUltPos() {
         RandomAccessFile file = getRandomAccess("rw");
-        // solicitarContacto();
+        consultarContactos(false);
+        solicitarContacto();
         StringBuffer buffNombre;
         StringBuffer buffDir;
         StringBuffer buffFecha_nac;
-        long lastID = getLastIndex();
+
+        try {
+            file.seek(lastPos);
+            file.writeInt(lastID);
+            file.writeBoolean(true);
+
+            buffNombre = new StringBuffer(strNombre);
+            buffNombre.setLength(14);
+            file.writeChars(buffNombre.toString()); //nombre
+
+            file.writeInt(tlf); //tlf
+
+            buffDir = new StringBuffer(strDir);
+            buffDir.setLength(20);
+            file.writeChars(buffDir.toString()); //dir
+
+            file.writeInt(cp); //cp
+
+            buffFecha_nac = new StringBuffer(strFechanac);
+            buffFecha_nac.setLength(10);
+            file.writeChars(buffFecha_nac.toString()); //fecha_nacimiento
+
+            file.writeBoolean(debeDinero); //money (debe dinero?)
+            file.writeFloat(cantidad); //cantidad
+            file.close();
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+
     }
 
-    private long getLastIndex() {
-        long pos = 0;
-        long lastID = 0;
+    private void addContatoPorCharsFirstFreePos() {
+        //1.Recorrer el fichero hasta encontrar un "noTaBorrao" en false, es decir, el contacto esta borrado logicamente
+        //Si lo encuentra debe posicionarse al principio (Ej: si el contacto 1 estuviera borrado, se colocaria en la posicion 0)
+        //Si no lo encuentra debe posicionarse al final del fichero
+
+
+    }
+
+    private long posOnLogicFalse() {
+        long pos = 4;
+        boolean found;
+        consultarContactos(false);
+
+        RandomAccessFile file = getRandomAccess("r");
         try {
-            RandomAccessFile randomFileLectura = getRandomAccess("r");
             try {
                 do {
-                    randomFileLectura.seek(pos);
-                    lastID = randomFileLectura.readInt();
+                    file.seek(pos);
+                    found = file.readBoolean();
+
                     pos += LONGITUD_CONTACTO;
-                } while (randomFileLectura.getFilePointer() != randomFileLectura.length());
-            } catch (EOFException ignored) {
+                } while (found);
+            } catch (EOFException ex) {
+                System.out.println("No hay ningún contacto borrado lógicamente");
+                return lastPos;
             }
-            randomFileLectura.close();
+            file.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return lastID;
+
+        return pos;
+    }
+
+    private void getLastIndex(int lastID) {
+        this.lastID = lastID + 1;
+    }
+
+    private void getLastPos(long pos) {
+        this.lastPos = pos;
     }
 
     private void solicitarContacto() {
@@ -326,4 +386,13 @@ public class RandomMenu {
             cantidad = 0;
         }
     }
+
+    private void charsOrUTFUltPos() {
+        System.out.print("¿Quieres añadir el contacto con Chars[true] o UTF[false]? -> ");
+        boolean elec = teclado.nextBoolean();
+        if (elec) {
+            addContatoPorCharsUltPos();
+        }
+    }
+
 }

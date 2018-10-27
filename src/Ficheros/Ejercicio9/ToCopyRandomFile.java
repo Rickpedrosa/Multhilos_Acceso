@@ -58,8 +58,14 @@ public class ToCopyRandomFile {
                 System.out.println("Fin de copiado");
             }
             datIn.close(); //fin de lectura
+            randomFile.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    private void depurarFichero(){
+        File ficheroToDepurar = new File("E:\\2dam\\prog_movil\\IdeaProjects\\MA\\NuevoDirectorio\\binaryRandom.dat");
+
     }
 }

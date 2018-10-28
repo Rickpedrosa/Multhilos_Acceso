@@ -30,12 +30,12 @@ public class ToCopyRandomFile {
 
             try {
                 while (true) {
-                    randomFile.writeInt(id);
-                    randomFile.writeBoolean(true);
-
                     buffNombre = new StringBuffer(datIn.readUTF());
                     buffNombre.setLength(14);
                     randomFile.writeChars(buffNombre.toString()); //nombre
+
+                    randomFile.writeInt(id);
+                    randomFile.writeBoolean(true);
 
                     randomFile.writeInt(datIn.readInt()); //tlf
 
@@ -64,8 +64,5 @@ public class ToCopyRandomFile {
         }
     }
 
-    private void depurarFichero(){
-        File ficheroToDepurar = new File("E:\\2dam\\prog_movil\\IdeaProjects\\MA\\NuevoDirectorio\\binaryRandom.dat");
 
-    }
 }

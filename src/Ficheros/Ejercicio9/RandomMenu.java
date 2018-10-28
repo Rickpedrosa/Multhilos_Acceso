@@ -21,7 +21,7 @@ public class RandomMenu {
     }
 
     private RandomMenu() {
-        ficherOrigen = new File("E:\\2dam\\prog_movil\\IdeaProjects\\MA\\NuevoDirectorio\\binaryRandom.dat");
+        ficherOrigen = new File("NuevoDirectorio/binaryRandom.dat");
         //"E:\\2dam\\prog_movil\\IdeaProjects\\MA\\NuevoDirectorio\\binaryRandomCompacted.dat"
         //"E:\\2dam\\prog_movil\\IdeaProjects\\MA\\NuevoDirectorio\\binaryRandom.dat"
         nombre = new char[14];
@@ -436,7 +436,7 @@ public class RandomMenu {
 
     private void depurarFichero() throws IOException {
         /*<----Utilizando el fichero original, copiar a otro fichero todos los contactos con el boolean lógico a true---->*/
-        File ficheroCompacto = new File("E:\\2dam\\prog_movil\\IdeaProjects\\MA\\NuevoDirectorio\\binaryRandomCompacted.dat");
+        File ficheroCompacto = new File("NuevoDirectorio/binaryRandomCompacted.dat");
         RandomAccessFile ficheroToDepurar = new RandomAccessFile(ficheroCompacto, "rw");
         RandomAccessFile fileOrigen = getRandomAccess("r");
         StringBuffer buffNombre;
@@ -497,7 +497,7 @@ public class RandomMenu {
 
         /*<----Una vez copiado, borrar el fichero original. Renombrar el fichero nuevo como el anterior, exactamente igual---->*/
         System.out.println("El fichero original " + (ficherOrigen.delete() ? "ha sido borrado" : "no ha podido ser borrado"));
-        System.out.println("El fichero " + (ficheroCompacto.renameTo(new File("E:\\2dam\\prog_movil\\IdeaProjects\\MA\\NuevoDirectorio\\binaryRandom.dat"))
+        System.out.println("El fichero " + (ficheroCompacto.renameTo(new File("NuevoDirectorio/binaryRandom.dat"))
                 ? "ha sido renombrado" : "no ha podido ser renombrado"));
     }
 }

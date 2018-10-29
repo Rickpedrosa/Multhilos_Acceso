@@ -2,6 +2,8 @@ package Ficheros.Ejercicio9;
 
 import java.io.*;
 
+import static Ficheros.Ejercicio9.RandomAccessUtils.utfConverter;
+
 /* private String nombre;
     private int tlf 4bytes;
     private String dir;
@@ -64,5 +66,44 @@ public class ToCopyRandomFile {
         }
     }
 
+    public static void copyFiletoRandomFileUTFVersion() {
+        /*Poner StringBuffer.setLength(15) por si las moscas*/
+        File archivoOrigen = new File("NuevoDirectorio/binaryGOD.dat");
+
+        try {
+            FileInputStream readBin = new FileInputStream(archivoOrigen);
+            DataInputStream datIn = new DataInputStream(readBin);
+            RandomAccessFile randomFile = new RandomAccessFile("NuevoDirectorio/binaryRandom.dat", "rw");
+            int id = 1;
+
+            try {
+                while (true) {
+                    randomFile.writeUTF(utfConverter(datIn.readUTF(), 14)); //nombre
+
+                    randomFile.writeInt(id);
+                    randomFile.writeBoolean(true);
+
+                    randomFile.writeInt(datIn.readInt()); //tlf
+
+                    randomFile.writeUTF(utfConverter(datIn.readUTF(), 20)); //dir
+
+                    randomFile.writeInt(datIn.readInt()); //cp
+
+                    randomFile.writeUTF(utfConverter(datIn.readUTF(), 10)); //fecha_nacimiento
+
+                    randomFile.writeBoolean(datIn.readBoolean()); //money (debe dinero?)
+                    randomFile.writeFloat(datIn.readFloat()); //cantidad
+                    id++;
+                    System.out.println("Contacto copiado");
+                }
+            } catch (EOFException ex) {
+                System.out.println("Fin de copiado");
+            }
+            datIn.close(); //fin de lectura
+            randomFile.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
 }

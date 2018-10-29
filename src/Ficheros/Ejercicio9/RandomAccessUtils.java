@@ -5,7 +5,7 @@ import org.jetbrains.annotations.NotNull;
 import java.io.*;
 import java.util.Scanner;
 
-public class RandomMenu {
+class RandomAccessUtils {
 
     private Scanner teclado;
     private String strNombre, strDir, strFechanac, formato;
@@ -16,94 +16,17 @@ public class RandomMenu {
     private char dir[], fechanac[], nombre[];
     private File ficherOrigen;
 
-    public static void main(String[] args) {
-        RandomMenu r = new RandomMenu();
-    }
-
-    private RandomMenu() {
+    RandomAccessUtils() {
         ficherOrigen = new File("NuevoDirectorio/binaryRandom.dat");
-        //"E:\\2dam\\prog_movil\\IdeaProjects\\MA\\NuevoDirectorio\\binaryRandomCompacted.dat"
-        //"E:\\2dam\\prog_movil\\IdeaProjects\\MA\\NuevoDirectorio\\binaryRandom.dat"
         nombre = new char[14];
         fechanac = new char[10];
         dir = new char[20];
         teclado = new Scanner(System.in);
         formato = "Contacto %d; Nombre: %s; Teléfono: %d; " +
                 "Dirección: %s; Código Postal: %d; Fecha de nacimiento: %s; ¿Debe dinero? %b; Cantidad: %.2f€;\n";
-        initApp();
-//        menu();
     }
 
-    private void initApp() {
-        if (ficherOrigen.exists()) {
-            menu();
-        } else {
-            ToCopyRandomFile.copyFiletoRandomFile();
-            initApp();
-        }
-    }
-
-    private void menu() {
-        System.out.println("****************MENÚ***************");
-        System.out.println("1. Consultar todos los contactos");
-        System.out.println("2. Consultar contacto por ID");
-        System.out.println("3. Añadir nuevo contacto");
-        System.out.println("4. Borrar contacto por ID");
-        System.out.println("5. Modificar deudas por ID");
-        System.out.println("6. Compactación del fichero");
-        System.out.println("7. Borrar fichero de origen");
-        System.out.println("0. Salir");
-        System.out.println("**********************************\n");
-
-        System.out.print("Escribe el número del menú: ");
-        int op = teclado.nextInt();
-        switch (op) {
-            //Hacer dos versiones: con writeChars y writeUTF
-            case 0:
-                System.exit(0);
-                break;
-            case 1:
-                requestAllContacts(true);
-                menu();
-                break;
-            case 2:
-                requestContactByID();
-                menu();
-                break;
-            case 3:
-                //Añadir contacto 1)Por el final 2)Primera pos libre
-                System.out.println("En construcción");
-                writeCharsOrUTF();
-                menu();
-                break;
-            case 4:
-                logicalDeleteByID();
-                menu();
-                break;
-            case 5:
-                modifyDebtsByID();
-                menu();
-                break;
-            case 6:
-                //Compactación del fichero
-                System.out.println("En construcción");
-                try {
-                    depurarFichero();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                System.exit(0);
-                break;
-            case 7:
-                //noinspection ResultOfMethodCallIgnored
-                ficherOrigen.delete();
-                System.out.println("Fichero borrado");
-                System.exit(0);
-                break;
-        }
-    }
-
-    private void requestContactByID() {
+    void requestCharContactByID() {
         try {
             System.out.print("Introduce el ID del contacto que buscas: ");
             int op = teclado.nextInt();
@@ -127,7 +50,8 @@ public class RandomMenu {
                 cantidad = randomFileLectura.readFloat();
 
                 if (noTaBorrao) {
-                    System.out.printf(formato, id, strNombre, tlf, strDir, cp, strFechanac, debeDinero, cantidad);
+                    System.out.printf(formato, id, strNombre, tlf, strDir,
+                            cp, strFechanac, debeDinero, cantidad);
                     System.out.println();
                 } else {
                     System.out.println("Contacto no encontrado\n");
@@ -139,7 +63,44 @@ public class RandomMenu {
         }
     }
 
-    private void requestAllContacts(boolean mostrar) {
+    void requestUTFContactByID() {
+        try {
+            System.out.print("Introduce el ID del contacto que buscas: ");
+            int op = teclado.nextInt();
+
+            RandomAccessFile randomFileLectura = getRandomAccess("r");
+            long posicion = (op - 1) * LONGITUD_CONTACTO;
+            if (posicion >= randomFileLectura.length()) {
+                System.out.println("El empleado no existe\n");
+            } else {
+                randomFileLectura.seek(posicion);
+                strNombre = randomFileLectura.readUTF();
+
+                id = randomFileLectura.readInt();
+                noTaBorrao = randomFileLectura.readBoolean();
+
+                tlf = randomFileLectura.readInt();
+                strDir = randomFileLectura.readUTF();
+                cp = randomFileLectura.readInt();
+                strFechanac = randomFileLectura.readUTF();
+                debeDinero = randomFileLectura.readBoolean();
+                cantidad = randomFileLectura.readFloat();
+
+                if (noTaBorrao) {
+                    System.out.printf(formato, id, formatStringToRead(strNombre), tlf, formatStringToRead(strDir),
+                            cp, formatStringToRead(strFechanac), debeDinero, cantidad);
+                    System.out.println();
+                } else {
+                    System.out.println("Contacto no encontrado\n");
+                }
+            }
+            randomFileLectura.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    void requestAllCharContacts(boolean mostrar) {
         long pos = 0;
         try {
             RandomAccessFile randomFileLectura = getRandomAccess("r");
@@ -160,7 +121,46 @@ public class RandomMenu {
                     getLastIndex(id);
                     if (mostrar) {
                         if (id > 0 && noTaBorrao) {
-                            System.out.printf(formato, id, strNombre, tlf, strDir, cp, strFechanac, debeDinero, cantidad);
+                            System.out.printf(formato, id, strNombre, tlf, strDir,
+                                    cp, strFechanac, debeDinero, cantidad);
+                        }
+                    }
+                    pos += LONGITUD_CONTACTO;
+
+                } while (randomFileLectura.getFilePointer() != randomFileLectura.length());
+            } catch (EOFException ex) {
+                System.out.println("Fin de lectura de contactos\n");
+            }
+            randomFileLectura.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    void requestAllUTFContacts(@SuppressWarnings("SameParameterValue") boolean mostrar) {
+        long pos = 0;
+        try {
+            RandomAccessFile randomFileLectura = getRandomAccess("r");
+            String nom, dir, fecha;
+            try {
+                do {
+                    randomFileLectura.seek(pos);
+
+                    nom = randomFileLectura.readUTF();
+                    id = randomFileLectura.readInt();
+                    noTaBorrao = randomFileLectura.readBoolean();
+                    tlf = randomFileLectura.readInt();
+                    dir = randomFileLectura.readUTF();
+                    cp = randomFileLectura.readInt();
+                    fecha = randomFileLectura.readUTF();
+                    debeDinero = randomFileLectura.readBoolean();
+                    cantidad = randomFileLectura.readFloat();
+
+                    getLastIndex(id);
+                    if (mostrar) {
+                        if (id > 0 && noTaBorrao) {
+                            System.out.printf(formato, id, formatStringToRead(nom), tlf, formatStringToRead(dir),
+                                    cp, formatStringToRead(fecha), debeDinero, cantidad);
                         }
                     }
                     pos += LONGITUD_CONTACTO;
@@ -185,7 +185,7 @@ public class RandomMenu {
         return String.valueOf(arrayChar);
     }
 
-    private void logicalDeleteByID() {
+    void logicalDeleteByID() {
         try {
             System.out.print("Introduce el ID del contacto para su borrado: ");
             int op = teclado.nextInt();
@@ -206,7 +206,7 @@ public class RandomMenu {
         }
     }
 
-    private void modifyDebtsByID() {
+    void modifyDebtsByID() {
         System.out.print("Introduce el ID del contacto para modificar su deuda: ");
         int op = teclado.nextInt();
         boolean esDeudor;
@@ -290,7 +290,7 @@ public class RandomMenu {
 
     private void addContactByCharsLastPosition() {
         RandomAccessFile file = getRandomAccess("rw");
-        requestAllContacts(false);
+        requestAllCharContacts(false);
         requestNewContact();
         StringBuffer buffNombre;
         StringBuffer buffDir;
@@ -324,7 +324,57 @@ public class RandomMenu {
         } catch (IOException ex) {
             ex.printStackTrace();
         }
+    }
 
+    private void addContactByUTFLastPosition() {
+        RandomAccessFile file = getRandomAccess("rw");
+        requestAllUTFContacts(true);
+        requestNewContact();
+        String nombre = utfConverter(strNombre, 14);
+        String dir = utfConverter(strDir, 20);
+        String nac = utfConverter(strFechanac, 10);
+        try {
+            file.seek(file.length());
+
+            file.writeUTF(nombre);//nombre
+            file.writeInt(lastID);
+            file.writeBoolean(true);
+            file.writeInt(tlf); //tlf
+            file.writeUTF(dir);//dir
+            file.writeInt(cp); //cp
+            file.writeUTF(nac);//fecha_nacimiento
+            file.writeBoolean(debeDinero); //money (debe dinero?)
+            file.writeFloat(cantidad); //cantidad
+
+            file.close();
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    private void addContactByUTFFirstFreePos() {
+        RandomAccessFile file = getRandomAccess("rw");
+        requestNewContact();
+        String nombre = utfConverter(strNombre, 14);
+        String dir = utfConverter(strDir, 20);
+        String nac = utfConverter(strFechanac, 10);
+        try {
+            file.seek(posOnLogicFalse());
+
+            file.writeUTF(nombre);//nombre
+            file.writeInt(lastID);
+            file.writeBoolean(true);
+            file.writeInt(tlf); //tlf
+            file.writeUTF(dir);//dir
+            file.writeInt(cp); //cp
+            file.writeUTF(nac);//fecha_nacimiento
+            file.writeBoolean(debeDinero); //money (debe dinero?)
+            file.writeFloat(cantidad); //cantidad
+
+            file.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private void addContactByCharsFirstFreePos() {
@@ -420,21 +470,29 @@ public class RandomMenu {
         }
     }
 
-    private void writeCharsOrUTF() {
-        System.out.print("¿Quieres añadir el contacto con Chars[true] o UTF[false]? -> ");
-        boolean elec = teclado.nextBoolean();
-        if (elec) {
-            System.out.print("¿1era posición libre[true] o final de fichero[false]? -> ");
-            boolean startOrEnd = teclado.nextBoolean();
-            if (startOrEnd) {
-                addContactByCharsFirstFreePos();
-            } else {
-                addContactByCharsLastPosition();
-            }
+    void writeCharsContacts() {
+        boolean startOrEnd;
+        System.out.print("¿1era posición libre[true] o final de fichero[false]? -> ");
+        startOrEnd = teclado.nextBoolean();
+        if (startOrEnd) {
+            addContactByCharsFirstFreePos();
+        } else {
+            addContactByCharsLastPosition();
         }
     }
 
-    private void depurarFichero() throws IOException {
+    void writeUTFContacts() {
+        boolean startOrEnd;
+        System.out.print("¿1era posición libre[true] o final de fichero[false]? -> ");
+        startOrEnd = teclado.nextBoolean();
+        if (startOrEnd) {
+            addContactByUTFFirstFreePos();
+        } else {
+            addContactByUTFLastPosition();
+        }
+    }
+
+    void depurarFicheroWithChars() throws IOException {
         /*<----Utilizando el fichero original, copiar a otro fichero todos los contactos con el boolean lógico a true---->*/
         File ficheroCompacto = new File("NuevoDirectorio/binaryRandomCompacted.dat");
         RandomAccessFile ficheroToDepurar = new RandomAccessFile(ficheroCompacto, "rw");
@@ -499,5 +557,29 @@ public class RandomMenu {
         System.out.println("El fichero original " + (ficherOrigen.delete() ? "ha sido borrado" : "no ha podido ser borrado"));
         System.out.println("El fichero " + (ficheroCompacto.renameTo(new File("NuevoDirectorio/binaryRandom.dat"))
                 ? "ha sido renombrado" : "no ha podido ser renombrado"));
+    }
+
+    static String utfConverter(String cadena, int stringLength) {
+        String stringFinal = cadena;
+        int stringLengthFinal = ((stringLength * 2) - 2) - cadena.length();
+
+        for (int i = 0; i < stringLengthFinal; i++) stringFinal = stringFinal.concat(" ");
+
+        return stringFinal;
+    }
+
+    private String formatStringToRead(String cadena) {
+        /*Al convertir en utf concatenamos espacios para llenar los bytes. A la hora de leer el valor,
+         * también saldrán los espacios. Formatear el string de utf para que salga el valor sin espacios a la derecha*/
+        char readValue;
+        /*La condición a la hora de cortar sería encontrarse dos espacios, ya que si solo hay uno podría tratarse de
+         * un nombre compuesto*/
+        for (int i = 0; i < cadena.length(); i++) {
+            readValue = cadena.charAt(i);
+            if (Character.isWhitespace(readValue) && Character.isWhitespace(cadena.charAt(i + 1))) {
+                return cadena.substring(0, i);
+            }
+        }
+        return cadena;
     }
 }

@@ -1,5 +1,7 @@
 package Ficheros.Ejercicio9;
 
+import Ficheros.Ejercicio9.Utilidad.UtilidadForRandom;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.Scanner;
@@ -16,14 +18,14 @@ public class MenuForRandomAccess {
             if (origen.exists()) {
                 menuChars();
             } else {
-                ToCopyRandomFile.copyFiletoRandomFile();
+                UtilidadForRandom.copyFiletoRandomFile();
                 menuChars();
             }
         } else {
             if (origen.exists()) {
                 menuUTF();
             } else {
-                ToCopyRandomFile.copyFiletoRandomFileUTFVersion();
+                UtilidadForRandom.copyFiletoRandomFileUTFVersion();
                 menuUTF();
             }
         }
@@ -120,7 +122,7 @@ public class MenuForRandomAccess {
                 break;
             case 6:
                 try {
-                    rUTF.depurarFicheroWithChars();
+                    rUTF.depurarFicheroWithUTF();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

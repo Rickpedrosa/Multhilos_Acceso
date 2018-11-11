@@ -1,5 +1,6 @@
 package Ficheros.Ejercicio9;
 
+import Ficheros.Ejercicio9.Utilidad.UtilidadForRandom;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.*;
@@ -37,15 +38,15 @@ class RandomAccessUtils {
                 System.out.println("El empleado no existe\n");
             } else {
                 randomFileLectura.seek(posicion);
-                strNombre = readValueToString(randomFileLectura, nombre);
+                strNombre = UtilidadForRandom.readValueToString(randomFileLectura, nombre);
 
                 id = randomFileLectura.readInt();
                 noTaBorrao = randomFileLectura.readBoolean();
 
                 tlf = randomFileLectura.readInt();
-                strDir = readValueToString(randomFileLectura, dir);
+                strDir = UtilidadForRandom.readValueToString(randomFileLectura, dir);
                 cp = randomFileLectura.readInt();
-                strFechanac = readValueToString(randomFileLectura, fechanac);
+                strFechanac = UtilidadForRandom.readValueToString(randomFileLectura, fechanac);
                 debeDinero = randomFileLectura.readBoolean();
                 cantidad = randomFileLectura.readFloat();
 
@@ -87,8 +88,9 @@ class RandomAccessUtils {
                 cantidad = randomFileLectura.readFloat();
 
                 if (noTaBorrao) {
-                    System.out.printf(formato, id, formatStringToRead(strNombre), tlf, formatStringToRead(strDir),
-                            cp, formatStringToRead(strFechanac), debeDinero, cantidad);
+                    System.out.printf(formato, id, UtilidadForRandom.formatStringToRead(strNombre), tlf,
+                            UtilidadForRandom.formatStringToRead(strDir),
+                            cp, UtilidadForRandom.formatStringToRead(strFechanac), debeDinero, cantidad);
                     System.out.println();
                 } else {
                     System.out.println("Contacto no encontrado\n");
@@ -108,13 +110,13 @@ class RandomAccessUtils {
                 do {
                     randomFileLectura.seek(pos);
 
-                    strNombre = readValueToString(randomFileLectura, nombre);
+                    strNombre = UtilidadForRandom.readValueToString(randomFileLectura, nombre);
                     id = randomFileLectura.readInt();
                     noTaBorrao = randomFileLectura.readBoolean();
                     tlf = randomFileLectura.readInt();
-                    strDir = readValueToString(randomFileLectura, dir);
+                    strDir = UtilidadForRandom.readValueToString(randomFileLectura, dir);
                     cp = randomFileLectura.readInt();
-                    strFechanac = readValueToString(randomFileLectura, fechanac);
+                    strFechanac = UtilidadForRandom.readValueToString(randomFileLectura, fechanac);
                     debeDinero = randomFileLectura.readBoolean();
                     cantidad = randomFileLectura.readFloat();
 
@@ -159,8 +161,9 @@ class RandomAccessUtils {
                     getLastIndex(id);
                     if (mostrar) {
                         if (id > 0 && noTaBorrao) {
-                            System.out.printf(formato, id, formatStringToRead(nom), tlf, formatStringToRead(dir),
-                                    cp, formatStringToRead(fecha), debeDinero, cantidad);
+                            System.out.printf(formato, id, UtilidadForRandom.formatStringToRead(nom),
+                                    tlf, UtilidadForRandom.formatStringToRead(dir),
+                                    cp, UtilidadForRandom.formatStringToRead(fecha), debeDinero, cantidad);
                         }
                     }
                     pos += LONGITUD_CONTACTO;
@@ -173,16 +176,6 @@ class RandomAccessUtils {
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-    @NotNull
-    private String readValueToString(RandomAccessFile f, @NotNull char[] arrayChar) throws IOException {
-        char aux;
-        for (int i = 0; i < arrayChar.length; i++) {
-            aux = f.readChar();
-            arrayChar[i] = aux;
-        }
-        return String.valueOf(arrayChar);
     }
 
     void logicalDeleteByID() {
@@ -204,7 +197,7 @@ class RandomAccessUtils {
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
+    } //mark
 
     void modifyDebtsByID() {
         System.out.print("Introduce el ID del contacto para modificar su deuda: ");
@@ -268,7 +261,7 @@ class RandomAccessUtils {
             e.printStackTrace();
         }
         return file;
-    }
+    } //mark
 
     private boolean isContactTrueLogic(@NotNull RandomAccessFile f, int id) {
         /*No hago el file.close() aquí porque se hace en el método donde se le llama*/
@@ -286,7 +279,7 @@ class RandomAccessUtils {
             e.printStackTrace();
         }
         return borrado;
-    }
+    } //mark
 
     private void addContactByCharsLastPosition() {
         RandomAccessFile file = getRandomAccess("rw");
@@ -330,9 +323,9 @@ class RandomAccessUtils {
         RandomAccessFile file = getRandomAccess("rw");
         requestAllUTFContacts(true);
         requestNewContact();
-        String nombre = utfConverter(strNombre, 14);
-        String dir = utfConverter(strDir, 20);
-        String nac = utfConverter(strFechanac, 10);
+        String nombre = UtilidadForRandom.utfConverter(strNombre, 14);
+        String dir = UtilidadForRandom.utfConverter(strDir, 20);
+        String nac = UtilidadForRandom.utfConverter(strFechanac, 10);
         try {
             file.seek(file.length());
 
@@ -355,9 +348,9 @@ class RandomAccessUtils {
     private void addContactByUTFFirstFreePos() {
         RandomAccessFile file = getRandomAccess("rw");
         requestNewContact();
-        String nombre = utfConverter(strNombre, 14);
-        String dir = utfConverter(strDir, 20);
-        String nac = utfConverter(strFechanac, 10);
+        String nombre = UtilidadForRandom.utfConverter(strNombre, 14);
+        String dir = UtilidadForRandom.utfConverter(strDir, 20);
+        String nac = UtilidadForRandom.utfConverter(strFechanac, 10);
         try {
             file.seek(posOnLogicFalse());
 
@@ -497,61 +490,9 @@ class RandomAccessUtils {
         File ficheroCompacto = new File("NuevoDirectorio/binaryRandomCompacted.dat");
         RandomAccessFile ficheroToDepurar = new RandomAccessFile(ficheroCompacto, "rw");
         RandomAccessFile fileOrigen = getRandomAccess("r");
-        StringBuffer buffNombre;
-        StringBuffer buffDir;
-        StringBuffer buffFecha_nac;
 
-        long pos = 32;
-        int vueltas = 1;
         /*<----Reordenar los ids de los contactos.---->*/
-        try {
-            do {
-                fileOrigen.seek(pos);
-
-                if (fileOrigen.readBoolean()) {
-                    pos = pos - 32;
-                    fileOrigen.seek(pos);
-
-                    buffNombre = new StringBuffer(readValueToString(fileOrigen, nombre));
-                    buffNombre.setLength(14);
-                    ficheroToDepurar.writeChars(buffNombre.toString()); //nombre
-
-                    fileOrigen.readInt(); /*Aunque no los utilice en la escritura, hay que declarar la lectura para que
-                    no se pierdan los bytes y se pueda completar sin problemas*/
-                    fileOrigen.readBoolean();
-
-                    ficheroToDepurar.writeInt(vueltas);
-                    ficheroToDepurar.writeBoolean(true);
-
-                    ficheroToDepurar.writeInt(fileOrigen.readInt()); //tlf
-
-                    buffDir = new StringBuffer(readValueToString(fileOrigen, dir));
-                    buffDir.setLength(20);
-                    ficheroToDepurar.writeChars(buffDir.toString()); //dir
-
-                    ficheroToDepurar.writeInt(fileOrigen.readInt()); //cp
-
-                    buffFecha_nac = new StringBuffer(readValueToString(fileOrigen, fechanac));
-                    buffFecha_nac.setLength(10);
-                    ficheroToDepurar.writeChars(buffFecha_nac.toString()); //fecha_nacimiento
-
-                    ficheroToDepurar.writeBoolean(fileOrigen.readBoolean()); //money (debe dinero?)
-                    ficheroToDepurar.writeFloat(fileOrigen.readFloat()); //cantidad
-
-                    vueltas++;
-                    System.out.println("Contacto copiado");
-                    pos += LONGITUD_CONTACTO + 32;
-                } else {
-                    pos += LONGITUD_CONTACTO;
-                }
-
-            } while (fileOrigen.getFilePointer() != fileOrigen.length());
-        } catch (EOFException ex) {
-            System.out.println("Fin de copiado para compactación");
-        }
-        fileOrigen.close();
-        ficheroToDepurar.close();
-        System.out.println("Reordenación de IDs completada. Fichero compactado al 100%");
+        UtilidadForRandom.copyToCompact(fileOrigen, ficheroToDepurar, LONGITUD_CONTACTO, 32, false);
 
         /*<----Una vez copiado, borrar el fichero original. Renombrar el fichero nuevo como el anterior, exactamente igual---->*/
         System.out.println("El fichero original " + (ficherOrigen.delete() ? "ha sido borrado" : "no ha podido ser borrado"));
@@ -559,27 +500,19 @@ class RandomAccessUtils {
                 ? "ha sido renombrado" : "no ha podido ser renombrado"));
     }
 
-    static String utfConverter(String cadena, int stringLength) {
-        String stringFinal = cadena;
-        int stringLengthFinal = ((stringLength * 2) - 2) - cadena.length();
+    void depurarFicheroWithUTF() throws IOException {
+        /*<----Utilizando el fichero original, copiar a otro fichero todos los contactos con el boolean lógico a true---->*/
+        File ficheroCompacto = new File("NuevoDirectorio/binaryRandomCompacted.dat");
+        RandomAccessFile ficheroToDepurar = new RandomAccessFile(ficheroCompacto, "rw");
+        RandomAccessFile fileOrigen = getRandomAccess("r");
 
-        for (int i = 0; i < stringLengthFinal; i++) stringFinal = stringFinal.concat(" ");
+        /*<----Reordenar los ids de los contactos.---->*/
+        UtilidadForRandom.copyToCompact(fileOrigen, ficheroToDepurar, LONGITUD_CONTACTO, 32, true);
 
-        return stringFinal;
+        /*<----Una vez copiado, borrar el fichero original. Renombrar el fichero nuevo como el anterior, exactamente igual---->*/
+        System.out.println("El fichero original " + (ficherOrigen.delete() ? "ha sido borrado" : "no ha podido ser borrado"));
+        System.out.println("El fichero " + (ficheroCompacto.renameTo(new File("NuevoDirectorio/binaryRandom.dat"))
+                ? "ha sido renombrado" : "no ha podido ser renombrado"));
     }
 
-    private String formatStringToRead(String cadena) {
-        /*Al convertir en utf concatenamos espacios para llenar los bytes. A la hora de leer el valor,
-         * también saldrán los espacios. Formatear el string de utf para que salga el valor sin espacios a la derecha*/
-        char readValue;
-        /*La condición a la hora de cortar sería encontrarse dos espacios, ya que si solo hay uno podría tratarse de
-         * un nombre compuesto*/
-        for (int i = 0; i < cadena.length(); i++) {
-            readValue = cadena.charAt(i);
-            if (Character.isWhitespace(readValue) && Character.isWhitespace(cadena.charAt(i + 1))) {
-                return cadena.substring(0, i);
-            }
-        }
-        return cadena;
-    }
 }

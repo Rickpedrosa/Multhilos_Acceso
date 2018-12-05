@@ -22,6 +22,9 @@ public class Agenda implements Serializable {
         this.cantidad = cantidad;
     }
 
+    public Agenda() {
+    }
+
     public String getNombre() {
         return nombre;
     }
@@ -62,10 +65,6 @@ public class Agenda implements Serializable {
         this.fechanac = fechanac;
     }
 
-    public boolean isMoney() {
-        return money;
-    }
-
     public void setMoney(boolean money) {
         this.money = money;
     }
@@ -78,8 +77,12 @@ public class Agenda implements Serializable {
         this.cantidad = cantidad;
     }
 
-    public boolean getMoney(){
+    public boolean getMoney() {
         return money;
     }
 
+//    public String contactToString(int id) {
+//        String formato = "Contacto %d, Nombre: %s, Tlf: %d, Dir: %s, CP: %d, Fechanac: %s, DebeDinero: %b, Cantidad: %.2f\n";
+//        return String.format(formato, id, nombre, tlf, dir, cp, fechanac, money, cantidad);
+//    }
 }

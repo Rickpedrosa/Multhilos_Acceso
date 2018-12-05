@@ -1,5 +1,7 @@
 package Pruebas;
 
+import Ficheros.utilidad.StringUtility;
+
 import java.io.File;
 
 public class fgfgf {
@@ -13,10 +15,6 @@ public class fgfgf {
 //        }
 
 
-        int fact = 1;
-        for (int i = 3; i > 0; i--) {
-            fact = fact * i;
-        }
-        System.out.println(fact);
+        System.out.println(StringUtility.repeat(10,"*"));
     }
 }

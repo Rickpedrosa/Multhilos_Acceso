@@ -1,4 +1,4 @@
-package src.Multihilo.Ejercicio_syncro;
+package Multihilo.Ejercicio_syncro;
 
 public class Tropas {
 

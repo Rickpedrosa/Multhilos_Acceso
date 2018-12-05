@@ -1,7 +1,5 @@
 package Ficheros.Ejercicio8;
 
-import Ficheros.Ejercicio8.Agenda;
-
 import java.io.*;
 import java.util.Scanner;
 
@@ -74,6 +72,7 @@ public class Ej8_WithSerial {
                 System.out.println("*********************************");
                 System.out.println("Mi Agenda Telefónica");
                 System.out.println("*********************************");
+                //noinspection InfiniteLoopStatement
                 while (true) {
                     contacto = (Agenda) dataIS.readObject();
                     System.out.println();
@@ -86,13 +85,10 @@ public class Ej8_WithSerial {
                     System.out.printf("Cantidad: %.2f€\n", contacto.getCantidad());
                 }
             } catch (EOFException ex) {
-
+                System.out.println("*********************************");
             }
-            System.out.println("*********************************");
             dataIS.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
+        } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
     }

@@ -20,6 +20,7 @@ public class Ejercicio6 {
             FileWriter fw1 = new FileWriter("./NuevoDirectorio/fichero1.txt");
             FileWriter fw2 = new FileWriter("./NuevoDirectorio/fichero2.txt");
             FileWriter fw3 = new FileWriter("./NuevoDirectorio/fichero3.txt");
+
             while ((i = fr.read(buff)) != -1) {
                 if (i <= 5) {
                     fw1.write(buff, 0, i);
@@ -65,29 +66,25 @@ public class Ejercicio6 {
 //            decFW.write(buff, i - j, j);
 
 
-
-
-
-
 //            for (i = 0; i < 1; i++) {
 //                System.out.println(i = decF1.read(buff, 5, 5));
 //                System.out.println(buff);
 //            }
 
-                    System.out.println("ok ya");
-                    decF1.close();
-                    decF2.close();
-                    decF3.close();
-                    decFW.close();
+            System.out.println("ok ya");
+            decF1.close();
+            decF2.close();
+            decF3.close();
+            decFW.close();
 
-                } catch(FileNotFoundException e){
-                    e.printStackTrace();
-                } catch(IOException e){
-                    e.printStackTrace();
-                }
-            }
-
-            public void xd () {
-
-            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
+    }
+
+    public void xd() {
+
+    }
+}

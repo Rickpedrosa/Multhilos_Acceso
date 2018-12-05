@@ -3,7 +3,7 @@ package Ficheros.Ejercicio8;
 import java.io.*;
 import java.util.Scanner;
 
-public class Ej8_noSerial {
+class Ej8_noSerial {
 
     private Scanner teclado;
     private String nombre;
@@ -14,7 +14,7 @@ public class Ej8_noSerial {
     private boolean money;
     private float cantidad;
 
-    public Ej8_noSerial() {
+    Ej8_noSerial() {
         teclado = new Scanner(System.in);
         menu();
     }
@@ -26,7 +26,7 @@ public class Ej8_noSerial {
         File filesilla = new File("E:\\2dam\\prog_movil\\IdeaProjects\\MA\\NuevoDirectorio\\binaryGOD.dat");
         try {
             if (!filesilla.exists()) {
-                filesilla.createNewFile();
+                System.out.println(filesilla.createNewFile() ? "Creado" : "No creado");
                 writeBin = new FileOutputStream(filesilla);
             } else {
                 writeBin = new FileOutputStream(filesilla, true);
@@ -72,13 +72,12 @@ public class Ej8_noSerial {
 
     private void leerBinario() {
         try {
-            FileInputStream readBin = new FileInputStream("./NuevoDirectorio/binaryGOD.dat");
-            DataInputStream datIn = new DataInputStream(readBin);
-
+            DataInputStream datIn = new DataInputStream(new FileInputStream("./NuevoDirectorio/binaryGOD.dat"));
             try {
                 System.out.println("*********************************");
                 System.out.println("Mi Agenda Telefónica");
                 System.out.println("*********************************");
+                //noinspection InfiniteLoopStatement
                 while (true) {
                     nombre = datIn.readUTF();
                     tlf = datIn.readInt();
@@ -98,10 +97,10 @@ public class Ej8_noSerial {
                     System.out.printf("Cantidad: %.2f€\n", cantidad);
                 }
             } catch (EOFException e) {
+                System.out.println("*********************************");
+                System.out.println("*********************************");
             }
-            System.out.println("*********************************");
             datIn.close();
-            System.out.println("*********************************");
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -15,7 +15,9 @@ public class Delegado {
         miGente[8] = "Rubén";
         miGente[9] = "Lily";
         miGente[10] = "Nicolás";
-        System.out.printf("Nuevo delegado de 2ºDAM curso 2018/19 es %s", elegirDelegado(miGente));
+        //System.out.printf("Nuevo delegado de 2ºDAM curso 2018/19 es %s", elegirDelegado(miGente));
+        String x = "******************************************************************************";
+        System.out.println(x.length());
     }
 
     private static String elegirDelegado(String[] alumno) {

@@ -1,6 +1,6 @@
-package Ficheros.Ejercicio9;
+package Ficheros.ejercicio9;
 
-import Ficheros.Ejercicio9.Utilidad.UtilidadForRandom;
+import Ficheros.utilidad.UtilidadForRandom;
 
 import java.io.File;
 import java.io.IOException;
@@ -73,7 +73,7 @@ public class MenuForRandomAccess {
                 break;
             case 6:
                 try {
-                    rChar.depurarFicheroWithChars();
+                    rChar.depurarFichero(false);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -122,7 +122,7 @@ public class MenuForRandomAccess {
                 break;
             case 6:
                 try {
-                    rUTF.depurarFicheroWithUTF();
+                    rUTF.depurarFichero(true);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

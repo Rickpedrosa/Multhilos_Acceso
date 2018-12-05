@@ -10,14 +10,14 @@ package Multihilo.Ejercicio_semaphore_examenes;
 //el ordenador de entre los que estén disponibles.
 public class Main_semaforo {
     public static void main(String[] args) {
-        ColaDeExamen colita = new ColaDeExamen();
-        Thread[] alumnos = new Thread[12];
-        for (int i = 0; i < alumnos.length; i++) {
-            alumnos[i] = new Thread(new AlumnoExaminante(colita));
-        }
-
-        for (Thread alumno : alumnos) {
-            alumno.start();
-        }
+//        ColaDeExamen colita = new ColaDeExamen();
+//        Thread[] alumnos = new Thread[12];
+//        for (int i = 0; i < alumnos.length; i++) {
+//            alumnos[i] = new Thread(new AlumnoExaminante(colita));
+//        }
+//
+//        for (Thread alumno : alumnos) {
+//            alumno.start();
+//        }
     }
 }

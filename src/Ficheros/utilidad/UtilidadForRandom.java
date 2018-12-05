@@ -1,4 +1,4 @@
-package Ficheros.Ejercicio9.Utilidad;
+package Ficheros.utilidad;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -162,10 +162,8 @@ public class UtilidadForRandom {
     public static void copyFiletoRandomFile() {
         /*Poner StringBuffer.setLength(15) por si las moscas*/
         File archivoOrigen = new File("NuevoDirectorio/binaryGOD.dat");
-
         try {
-            FileInputStream readBin = new FileInputStream(archivoOrigen);
-            DataInputStream datIn = new DataInputStream(readBin);
+            DataInputStream datIn = new DataInputStream(new FileInputStream(archivoOrigen));
             RandomAccessFile randomFile = new RandomAccessFile("NuevoDirectorio/binaryRandom.dat", "rw");
             int id = 1;
             StringBuffer buffNombre;

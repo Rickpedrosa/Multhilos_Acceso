@@ -1,4 +1,4 @@
-package Ficheros.Ejercicio9;
+package Ficheros.ejercicio9;
 
 import org.jetbrains.annotations.NotNull;
 

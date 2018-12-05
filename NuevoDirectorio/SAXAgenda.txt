@@ -1,0 +1,3 @@
+Contacto 1, Nombre: Rick, Tlf: 343, Dir: [Algeciras]3, CP: 3, Fechanac: 3, DebeDinero: false, Cantidad: 0,00€
+Contacto 2, Nombre: Loler, Tlf: 344, Dir: [Algeciras]4, CP: 4, Fechanac: 4, DebeDinero: false, Cantidad: 0,00$
+Contacto 3, Nombre: Habubi, Tlf: 345, Dir: [Algeciras]5, CP: 5, Fechanac: 5, DebeDinero: false, Cantidad: 0,00€

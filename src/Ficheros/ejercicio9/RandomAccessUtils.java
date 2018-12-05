@@ -1,6 +1,6 @@
-package Ficheros.Ejercicio9;
+package Ficheros.ejercicio9;
 
-import Ficheros.Ejercicio9.Utilidad.UtilidadForRandom;
+import Ficheros.utilidad.UtilidadForRandom;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.*;
@@ -431,8 +431,7 @@ class RandomAccessUtils {
         if (!found) {
             pos = (pos - LONGITUD_CONTACTO) - 28;
         }
-        /*Devolverá la posición donde debe empezar a reescribir el contacto. Si es el contacto 1
-         * está borrado lógicamente, nos posicionará en 0*/
+        /*Devolverá la posición donde debe empezar a reescribir el contacto. Si es el contacto 1 está borrado lógicamente, nos posicionará en 0*/
         return pos;
     }
 
@@ -485,34 +484,20 @@ class RandomAccessUtils {
         }
     }
 
-    void depurarFicheroWithChars() throws IOException {
-        /*<----Utilizando el fichero original, copiar a otro fichero todos los contactos con el boolean lógico a true---->*/
+    void depurarFichero(boolean charsOrUTF) throws IOException {
         File ficheroCompacto = new File("NuevoDirectorio/binaryRandomCompacted.dat");
         RandomAccessFile ficheroToDepurar = new RandomAccessFile(ficheroCompacto, "rw");
         RandomAccessFile fileOrigen = getRandomAccess("r");
 
-        /*<----Reordenar los ids de los contactos.---->*/
-        UtilidadForRandom.copyToCompact(fileOrigen, ficheroToDepurar, LONGITUD_CONTACTO, 32, false);
+        if (charsOrUTF) {
+            UtilidadForRandom.copyToCompact(fileOrigen, ficheroToDepurar, LONGITUD_CONTACTO, 32, true);
+        } else {
+            UtilidadForRandom.copyToCompact(fileOrigen, ficheroToDepurar, LONGITUD_CONTACTO, 32, false);
+        }
 
         /*<----Una vez copiado, borrar el fichero original. Renombrar el fichero nuevo como el anterior, exactamente igual---->*/
         System.out.println("El fichero original " + (ficherOrigen.delete() ? "ha sido borrado" : "no ha podido ser borrado"));
         System.out.println("El fichero " + (ficheroCompacto.renameTo(new File("NuevoDirectorio/binaryRandom.dat"))
                 ? "ha sido renombrado" : "no ha podido ser renombrado"));
     }
-
-    void depurarFicheroWithUTF() throws IOException {
-        /*<----Utilizando el fichero original, copiar a otro fichero todos los contactos con el boolean lógico a true---->*/
-        File ficheroCompacto = new File("NuevoDirectorio/binaryRandomCompacted.dat");
-        RandomAccessFile ficheroToDepurar = new RandomAccessFile(ficheroCompacto, "rw");
-        RandomAccessFile fileOrigen = getRandomAccess("r");
-
-        /*<----Reordenar los ids de los contactos.---->*/
-        UtilidadForRandom.copyToCompact(fileOrigen, ficheroToDepurar, LONGITUD_CONTACTO, 32, true);
-
-        /*<----Una vez copiado, borrar el fichero original. Renombrar el fichero nuevo como el anterior, exactamente igual---->*/
-        System.out.println("El fichero original " + (ficherOrigen.delete() ? "ha sido borrado" : "no ha podido ser borrado"));
-        System.out.println("El fichero " + (ficheroCompacto.renameTo(new File("NuevoDirectorio/binaryRandom.dat"))
-                ? "ha sido renombrado" : "no ha podido ser renombrado"));
-    }
-
 }

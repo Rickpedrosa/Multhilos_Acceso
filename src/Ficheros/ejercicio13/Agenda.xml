@@ -1,0 +1,31 @@
+<ListaPersonasAgenda>
+    <list>
+        <DatosAgenda>
+            <nombre>Rick</nombre>
+            <tlf prefijo="+34">3</tlf>
+            <dir localidad="Algeciras">3</dir>
+            <cp>3</cp>
+            <fechanac>3</fechanac>
+            <money tipo="€">false</money>
+            <cantidad>0.0</cantidad>
+        </DatosAgenda>
+        <DatosAgenda>
+            <nombre>Loler</nombre>
+            <tlf prefijo="+34">4</tlf>
+            <dir localidad="Algeciras">4</dir>
+            <cp>4</cp>
+            <fechanac>4</fechanac>
+            <money tipo="$">true</money>
+            <cantidad>0.0</cantidad>
+        </DatosAgenda>
+        <DatosAgenda>
+            <nombre>Habubi</nombre>
+            <tlf prefijo="+34">5</tlf>
+            <dir localidad="Algeciras">5</dir>
+            <cp>5</cp>
+            <fechanac>5</fechanac>
+            <money tipo="€">false</money>
+            <cantidad>0.0</cantidad>
+        </DatosAgenda>
+    </list>
+</ListaPersonasAgenda>
